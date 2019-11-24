@@ -30,6 +30,22 @@ public class FCFS {
         }
     }
 
+    public static void sortProcesses() {
+        int i = 0;
+        while (i < numberOfProcesses) {
+            for (int j = 0; j < numberOfProcesses - 1; j++) {
+                for (int k = j; k < numberOfProcesses; k++) {
+                    if (process[j][1] > process[k][1]) {
+                        int temp[] = process[j];
+                        process[j] = process[k];
+                        process[k] = temp;
+                    }
+                }
+            }
+            i++;
+        }
+    }
+
     public static void displayTable(final int[][] process) {
         System.out.println("The Process and its timings are as follows\n");
         System.out.println("Process No | Arrival | Service | Waiting | Response | Total Time | C. S. ");
@@ -49,6 +65,7 @@ public class FCFS {
         acceptInput(2);
 
         // Algorithm Calculation of the Processes
+        sortProcesses();
 
         displayTable(process);
 
