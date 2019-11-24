@@ -39,11 +39,27 @@ public class FCFS {
                         int temp[] = process[j];
                         process[j] = process[k];
                         process[k] = temp;
+                    } else if (process[j][1] == process[k][1]) {
+                        if (process[j][0] > process[k][0]) {
+                            int temp[] = process[j];
+                            process[j] = process[k];
+                            process[k] = temp;
+                        }
                     }
                 }
             }
             i++;
         }
+    }
+
+    public static int sumOfArrivalTime() {
+        int i = 0;
+        int sum = 0;
+        while (i < numberOfProcesses) {
+            sum += process[i][1];
+            i++;
+        }
+        return sum;
     }
 
     public static void displayTable(final int[][] process) {
@@ -66,6 +82,8 @@ public class FCFS {
 
         // Algorithm Calculation of the Processes
         sortProcesses();
+        int totalArrivalTime = sumOfArrivalTime();
+        System.out.println("Total Arrival Time " + totalArrivalTime);
 
         displayTable(process);
 
