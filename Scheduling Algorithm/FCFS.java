@@ -4,6 +4,7 @@ public class FCFS {
 
     static Scanner sc = new Scanner(System.in);
     static int numberOfProcesses = 0;
+    static int totalServiceTime = 0;
 
     static int process[][];
     static int arrivalOfProcesses[][];
@@ -49,6 +50,7 @@ public class FCFS {
             }
             i++;
         }
+        sequenceOfArrivedProcesses();
     }
 
     public static int sumOfArrivalTime() {
@@ -61,21 +63,40 @@ public class FCFS {
         return sum;
     }
 
-    public static void sequenceOfArrivedProcesses(final int totalTime) {
+    public static void sequenceOfArrivedProcesses() {
 
         int x = 0;
-        arrivalOfProcesses = new int[numberOfProcesses][totalTime];
+        arrivalOfProcesses = new int[numberOfProcesses][totalServiceTime];
         while (x < numberOfProcesses) {
-            System.out.println("x " + x + " P" + process[x][0] + " LL " + process[x][1] + " UL " + process[x][2]
-                    + " TT " + totalTime);
             for (int j = process[x][1]; j < (process[x][1] + process[x][2]); j++) {
+                // if (j > 0 && x > 0) {
+                // if (arrivalOfProcesses[x - 1][j] > 0)
+                // j++;
+                // } else {
                 arrivalOfProcesses[x][j] = process[x][0];
+                // }
             }
             x++;
         }
+        arrivalOfProcesses();
     }
 
-    public static void displayProcessTable(int[][] process) {
+    public static void calculateTotalTime() {
+        System.out.println("Calculating the Total Time of each Process");
+
+        for (int i = 0; i < arrivalOfProcesses.length; i++) {
+            int count = arrivalOfProcesses[0].length * i;
+            for (int j = 0; j < arrivalOfProcesses[0].length; j++) {
+                if (arrivalOfProcesses[i][j] > 0) {
+                    count = j;
+                }
+            }
+            process[i][5] = count - process[i][1] + 1;
+            process[i][6] = 1;
+        }
+    }
+
+    public static void displayProcessTable() {
         System.out.println("The Process and its timings are as follows\n");
         System.out.println("Process No | Arrival | Service | Waiting | Response | Total Time | C. S. ");
         for (int i = 0; i < process.length; i++) {
@@ -84,9 +105,9 @@ public class FCFS {
         }
     }
 
-    public static void arrivalOfProcesses(final int totalTime) {
+    public static void arrivalOfProcesses() {
         System.out.println("The Process and its Arrival are as follows\n");
-        for (int i = 0; i < totalTime; i++)
+        for (int i = 0; i < totalServiceTime; i++)
             System.out.print(i + " ");
         System.out.println();
         for (int i = 0; i < arrivalOfProcesses.length; i++) {
@@ -107,14 +128,13 @@ public class FCFS {
         acceptInput(2);
 
         // Algorithm Calculation of the Processes
-        int totalServiceTime = sumOfArrivalTime();
+        totalServiceTime = sumOfArrivalTime();
         System.out.println("Total Service Time " + totalServiceTime);
 
         sortProcesses();
-        sequenceOfArrivedProcesses(totalServiceTime);
-        arrivalOfProcesses(totalServiceTime);
+        calculateTotalTime();
 
-        displayProcessTable(process);
+        displayProcessTable();
 
     }
 }
